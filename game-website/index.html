@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cube Town</title>
+    <meta name="description" content="Interactive Portfolio">
+    <!--link rel="shortcut icon" href="favicon.ico"-->
+    <!--Press Start Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<!--Styles to configure-->
+<style>
+    * {
+        font-family: 'Press Start 2P', cursive;
+    }
+
+    body {
+        background-color: black;
+    }
+
+    h1 {
+        margin: 0
+    }
+
+    button {
+        border: 1;
+        cursor: pointer;
+        font-size: 16px;
+        background-color: white;
+    }
+
+    button:hover {
+        background-color: #ccc;
+    }
+</style>
+<!--Battle screen, uses relative position to be laid on top of canvas resolution-->
+<div style="display: inline-block; position: relative;">
+    <div id="overlappingDiv"
+        style="background-color: black; position: absolute; top: 0; right: 0; bottom: 0; left: 0; opacity: 0; pointer-events: none; z-index: 10;">
+    </div>
+
+    <canvas></canvas>
+
+    <div id="userInterface" style="display: none">
+
+        <!--Enemy Status Bar-->
+        <div
+            style="background-color: white; width: 250px; position: absolute; top: 50px; left: 50px; border: 4px #00002c solid; padding: 12px">
+            <h1 style="font-size: 16px">Draggle</h1>
+            <!--Enemy Health Bar-->
+            <div style="position:relative;">
+                <div style="height:5px; background-color: #ccc; margin-top: 10px;"></div>
+                <div id="enemyHealthBar"
+                    style="height:5px; background-color: rgb(0, 130, 75); position:absolute; top: 0; left: 0; right: 0; width: 100%">
+                </div>
+            </div>
+        </div>
+
+        <!--Player Status Bar-->
+        <div
+            style="background-color: white; width: 250px; position: absolute; bottom: 175px; right: 50px; border: 4px #00002c solid; padding: 12px">
+            <h1 style="font-size: 16px">Emby</h1>
+            <!--Player Health Bar-->
+            <div style="position:relative;">
+                <div style="height:5px; background-color: #ccc; margin-top: 10px;"></div>
+                <div id="playerHealthBar"
+                    style="height:5px; background-color: rgb(0, 130, 75); position:absolute; top: 0; left: 0; right: 0; width: 100%">
+                </div>
+            </div>
+        </div>
+
+
+        <!--Action bar-->
+        <div
+            style="background-color: white; height: 140px; position: absolute; bottom: 0; right: 0; left: 0; border: 4px #00002c solid; display: flex; cursor: pointer;">
+            <!--Dialogue Box-->
+            <div id="dialogueBox"
+                style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: white; padding: 12px; display: none;">
+                dummy text</div>
+            <div id="attacksBox" style="width: 66.66%; display: grid; grid-template-columns: repeat(2, 1fr);">
+            </div>
+            <div
+                style="display: flex; align-items: center; justify-content: center; width: 33.33%; border-left: 4px #00002c solid;">
+                <h1 id="attackType" style="font-size: 16px;">Attack Type</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<!--GSAP is a JavaScript library for building high-performance animations that work in **every** major browser.-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"
+    integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!--iframe frameborder="0" width="100%" height="500px" src="https://replit.com/@mileseu/ConnectN?embed=true"></iframe-->
+<script src="data/battleZones.js"></script>
+<script src="data/collisions.js"></script>
+<script src="data/attacks.js"></script>
+<script src="data/monsters.js"></script>
+<script src="classes.js"></script>
+<script src="index.js"></script>
+<script src="battleScene.js"></script>
