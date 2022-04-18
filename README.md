@@ -1,2 +1,2 @@
 # cubetown
-my interactive portfolio
+WORK-IN-PROGRESS interactive portfolio
