@@ -1,11 +1,21 @@
 const canvas = document.querySelector('canvas');
-const context = canvas.getContext('2d')
+const context = canvas.getContext('2d');
 
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+// Resize canvas when the window is resized
+window.addEventListener('resize', resizeCanvas);
+
+// Initial canvas sizing
+resizeCanvas();
 
 
 //canvas size
-canvas.width = 1024
-canvas.height = 576
+//canvas.width = 1024
+//canvas.height = 576
 
 //collisions array taken from Tiled in /data, arrange array into rows of 70 (map width)
 const collisionsMap = []
@@ -23,7 +33,7 @@ for (let i = 0; i < battleZonesData.length; i += 70) {
 //offset to position map, player, boundary into center
 const offset = {
     x: -300,
-    y: -550
+    y: -50
 }
 
 
@@ -402,3 +412,116 @@ window.addEventListener('keyup', (e) => {
             break
     }
 })
+
+let touchStartTime = null;
+let holdDownInterval = null;
+let resetKeysTimeout = null;
+
+function startHoldDown(key) {
+  holdDownInterval = setInterval(() => {
+    // Do something repeatedly while the touch is being held down
+    switch (key) {
+      case 'w':
+        keys.w.pressed = true;
+        lastKey = 'w';
+        break;
+      case 'a':
+        keys.a.pressed = true;
+        lastKey = 'a';
+        break;
+      case 's':
+        keys.s.pressed = true;
+        lastKey = 's';
+        break;
+      case 'd':
+        keys.d.pressed = true;
+        lastKey = 'd';
+        break;
+      // Add cases for other keys as desired
+    }
+  }, 100); // Adjust the interval as desired
+}
+
+function endHoldDown() {
+  clearInterval(holdDownInterval);
+  keys.w.pressed = false;
+  keys.a.pressed = false;
+  keys.s.pressed = false;
+  keys.d.pressed = false;
+  lastKey = null; // Reset lastKey when the hold-down ends
+  resetKeysTimeout = setTimeout(() => {
+    // Set all keys to false after 2 seconds of no input
+    keys.w.pressed = false;
+    keys.a.pressed = false;
+    keys.s.pressed = false;
+    keys.d.pressed = false;
+    lastKey = null;
+  }, 1); // Adjust the timeout duration as desired
+}
+
+function cancelResetKeysTimeout() {
+  clearTimeout(resetKeysTimeout);
+}
+
+window.addEventListener('touchstart', (e) => {
+  cancelResetKeysTimeout();
+  touchStartTime = Date.now();
+  const touchX = e.touches[0].clientX;
+  const touchY = e.touches[0].clientY;
+
+  // Detect which key was pressed based on touch location
+  if (touchY < window.innerHeight / 2) {
+    if (touchX < window.innerWidth / 3) {
+      startHoldDown('a'); // Pressing on left third of top half of screen
+    } else if (touchX < window.innerWidth * 2 / 3) {
+      startHoldDown('w'); // Pressing on middle third of top half of screen
+    } else {
+      startHoldDown('d'); // Pressing on right third of top half of screen
+    }
+  } else {
+    startHoldDown('s'); // Pressing on bottom half of screen
+  }
+});
+
+window.addEventListener('touchmove', (e) => {
+  cancelResetKeysTimeout();
+  const touchX = e.touches[0].clientX;
+  const touchY = e.touches[0].clientY;
+
+  // Detect which key should be released based on touch location
+  if (touchY < window.innerHeight / 2) {
+    if (touchX < window.innerWidth / 3) {
+      if (lastKey === 'a') {
+        endHoldDown();
+      }
+    } else if (touchX < window.innerWidth * 2 / 3) {
+      if (lastKey === 'w') {
+        endHoldDown();
+      }
+    } else {
+      if (lastKey === 'd') {
+        endHoldDown();
+      }
+    }
+  } else {
+    if (lastKey === 's') {
+      endHoldDown();
+    }
+  }
+});
+
+window.addEventListener('touchend', (e) => {
+    const touchEndTime = Date.now();
+    const touchDuration = touchEndTime - touchStartTime;
+  
+    // End hold-down if touch ended before
+    if (touchDuration < 500) { // Adjust the duration as desired
+      endHoldDown();
+    } else {
+      // End hold-down if no input detected for 1 second
+      setTimeout(() => {
+          endHoldDown();
+
+      }, 0);
+    }
+  });
