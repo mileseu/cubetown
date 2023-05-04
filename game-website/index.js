@@ -1,21 +1,21 @@
 const canvas = document.querySelector('canvas');
 const context = canvas.getContext('2d');
 
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
+// function resizeCanvas() {
+//   canvas.width = window.innerWidth;
+//   canvas.height = window.innerHeight;
+// }
 
-// Resize canvas when the window is resized
-window.addEventListener('resize', resizeCanvas);
+// // Resize canvas when the window is resized
+// window.addEventListener('resize', resizeCanvas);
 
-// Initial canvas sizing
-resizeCanvas();
+// // Initial canvas sizing
+// resizeCanvas();
 
 
 //canvas size
-//canvas.width = 1024
-//canvas.height = 576
+canvas.width = 1024
+canvas.height = 576
 
 //collisions array taken from Tiled in /data, arrange array into rows of 70 (map width)
 const collisionsMap = []
